@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boleto Digital Confirmado</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body { background-color: #0b0f19; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; justify-content: center; padding: 20px; margin: 0; }
+        .ticket-card { background: #1e293b; max-width: 400px; width: 100%; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1px solid #334155; }
+        .header { background: #0284c7; padding: 20px; text-align: center; }
+        .badge { background: #22c55e; color: #000; font-weight: bold; padding: 6px 16px; border-radius: 20px; font-size: 14px; display: inline-block; margin-top: 8px; }
+        .content { padding: 24px; }
+        .info-group { margin-bottom: 16px; }
+        .label { color: #94a3b8; font-size: 12px; text-transform: uppercase; font-weight: bold; }
+        .value { font-size: 18px; font-weight: bold; margin-top: 4px; }
+        .qr-container { background: #ffffff; padding: 20px; border-radius: 12px; display: flex; justify-content: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="ticket-card">
+        <div class="header">
+            <h2 style="margin:0;">Entrada Confirmada</h2>
+            <div class="badge">✔ BOLETO ACEPTADO</div>
+        </div>
+        <div class="content">
+            <div class="info-group">
+                <div class="label">Asistente</div>
+                <div class="value" id="cliente">Cargando...</div>
+            </div>
+            <div class="info-group">
+                <div class="label">Evento</div>
+                <div class="value" id="evento">Cargando...</div>
+            </div>
+            <div class="info-group">
+                <div class="label">Ubicación</div>
+                <div class="value" id="asiento">Cargando...</div>
+            </div>
+            <div class="info-group">
+                <div class="label">Código Único</div>
+                <div class="value" id="token-text" style="color: #38bdf8; font-size: 14px;">---</div>
+            </div>
+            
+            <div class="qr-container">
+                <div id="qrcode"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token') || 'DEMO123';
+        const cliente = urlParams.get('cliente') || 'Cliente Registrado';
+        const evento = urlParams.get('evento') || 'Evento Especial';
+        const asiento = urlParams.get('asiento') || 'General';
+
+        document.getElementById('cliente').innerText = decodeURIComponent(cliente);
+        document.getElementById('evento').innerText = decodeURIComponent(evento);
+        document.getElementById('asiento').innerText = decodeURIComponent(asiento);
+        document.getElementById('token-text').innerText = token;
+
+        new QRCode(document.getElementById("qrcode"), {
+            text: token,
+            width: 180,
+            height: 180
+        });
+    </script>
+</body>
+</html>
